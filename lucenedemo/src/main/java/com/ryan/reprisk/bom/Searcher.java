@@ -11,7 +11,6 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -37,18 +36,6 @@ public class Searcher {
 			throws IOException, ParseException{
 		query = queryParser.parse(searchQuery);
 		return indexSearcher.search(query, LuceneConstants.MAX_SEARCH);
-	}
-
-	public TopDocs search(Query query,Sort sort) 
-			throws IOException, ParseException{
-		return indexSearcher.search(query, 
-				LuceneConstants.MAX_SEARCH,sort);
-	}
-
-	public void setDefaultFieldSortScoring(boolean doTrackScores, 
-			boolean doMaxScores){
-		indexSearcher.setDefaultFieldSortScoring(
-				doTrackScores,doMaxScores);
 	}
 
 	public Document getDocument(ScoreDoc scoreDoc) 
