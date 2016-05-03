@@ -1,11 +1,11 @@
-package com.ryan.reprisk.bom;
+package com.ryan.reprisk.constants;
 
 /**
  * constants - temp config file
  * @author ryan.bartolay
  *
  */
-public class LuceneConstants {
+public class AppConstants {
 	public static final String CONTENTS="contents";
 	public static final String FILE_NAME="filename";
 	public static final String FILE_PATH="filepath";

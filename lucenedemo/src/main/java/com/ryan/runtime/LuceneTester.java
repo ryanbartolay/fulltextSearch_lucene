@@ -8,9 +8,9 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
 import com.ryan.reprisk.bom.Indexer;
-import com.ryan.reprisk.bom.LuceneConstants;
 import com.ryan.reprisk.bom.Searcher;
 import com.ryan.reprisk.bom.TextFileFilter;
+import com.ryan.reprisk.constants.AppConstants;
 
 public class LuceneTester {
 
@@ -57,7 +57,7 @@ public class LuceneTester {
 		for(ScoreDoc scoreDoc : hits.scoreDocs) {
 			Document doc = searcher.getDocument(scoreDoc);
 			System.out.println("File: "
-					+ doc.get(LuceneConstants.FILE_PATH));
+					+ doc.get(AppConstants.FILE_PATH));
 		}
 		searcher.close();
 	}

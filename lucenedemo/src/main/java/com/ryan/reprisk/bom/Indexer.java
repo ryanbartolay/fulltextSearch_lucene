@@ -14,6 +14,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import com.ryan.reprisk.constants.AppConstants;
+
 /**
  * File to create indexes from xml files to an index directory 
  * @author ryan.bartolay
@@ -41,11 +43,11 @@ public class Indexer {
 		Document document = new Document();
 
 		//index file contents
-		Field contentField = new Field(LuceneConstants.CONTENTS, new FileReader(file));
+		Field contentField = new Field(AppConstants.CONTENTS, new FileReader(file));
 		//index file name
-		Field fileNameField = new Field(LuceneConstants.FILE_NAME, file.getName(), Field.Store.YES,Field.Index.NOT_ANALYZED);
+		Field fileNameField = new Field(AppConstants.FILE_NAME, file.getName(), Field.Store.YES,Field.Index.NOT_ANALYZED);
 		//index file path
-		Field filePathField = new Field(LuceneConstants.FILE_PATH,
+		Field filePathField = new Field(AppConstants.FILE_PATH,
 				file.getCanonicalPath(),
 				Field.Store.YES,Field.Index.NOT_ANALYZED);
 

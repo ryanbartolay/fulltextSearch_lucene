@@ -16,6 +16,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import com.ryan.reprisk.constants.AppConstants;
+
 public class Searcher {
 
 	IndexSearcher indexSearcher;
@@ -28,14 +30,14 @@ public class Searcher {
 				FSDirectory.open(new File(indexDirectoryPath));
 		indexSearcher = new IndexSearcher(indexDirectory);
 		queryParser = new QueryParser(Version.LUCENE_36,
-				LuceneConstants.CONTENTS,
+				AppConstants.CONTENTS,
 				new StandardAnalyzer(Version.LUCENE_36));
 	}
 
 	public TopDocs search( String searchQuery) 
 			throws IOException, ParseException{
 		query = queryParser.parse(searchQuery);
-		return indexSearcher.search(query, LuceneConstants.MAX_SEARCH);
+		return indexSearcher.search(query, AppConstants.MAX_SEARCH);
 	}
 
 	public Document getDocument(ScoreDoc scoreDoc) 
