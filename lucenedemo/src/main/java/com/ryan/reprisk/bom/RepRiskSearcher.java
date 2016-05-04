@@ -13,33 +13,31 @@ import com.ryan.reprisk.Searcher;
 import com.ryan.reprisk.constants.AppConstants;
 
 public class RepRiskSearcher {
-
+	
 	public List<Document> relevantSearch(String query) {
 		return search(query);
 	}
 	
 	// in lucene well do a double quote wildcard for absolute value
 	public List<Document> absoluteSearch(String query) {
-		return search("\"" + query + "*\"");
+		return search("\"" + query + "\"");
 	}
 	
 	private List<Document> search(String query) {
-		List<Document> documents = null;
+		List<Document> documents = new ArrayList<>();
 		try (Searcher searcher = new Searcher(AppConstants.INDEX_DIR);) {
 			
 			long startTime = System.currentTimeMillis();
 			TopDocs hits = searcher.search(query);
 			long endTime = System.currentTimeMillis();
 
-			System.out.println(hits.totalHits + " documents found. Time :" + (endTime - startTime));
-			
-			if(hits.scoreDocs.length > 0) {
-				documents = new ArrayList<>();
-			}
+			System.out.println("Query : " +query+ ". Total hits " + hits.totalHits + " documents found. Time :" + (endTime - startTime));
 			
 			for(ScoreDoc scoreDoc : hits.scoreDocs) {
 				Document document = searcher.getDocument(scoreDoc);
-				System.out.println("File: " + document.get(AppConstants.FILE_PATH));
+				if(AppConstants.isDebbugingMode) {
+					System.out.println("File: " + document.get(AppConstants.FILE_PATH));
+				}
 				documents.add(document);
 			}
 		} catch (IOException | ParseException e) {

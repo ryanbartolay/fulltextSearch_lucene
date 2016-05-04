@@ -6,6 +6,7 @@ package com.ryan.reprisk.constants;
  *
  */
 public class AppConstants {
+	public static final boolean isDebbugingMode = true;
 	public static final String INDEX_DIR = "C:\\Lucene\\RepRisk\\Index";
 	public static final String DATA_DIR = "C:\\Lucene\\RepRisk\\Data";
 	

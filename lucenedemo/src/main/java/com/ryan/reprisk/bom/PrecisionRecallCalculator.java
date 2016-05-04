@@ -14,11 +14,10 @@ public class PrecisionRecallCalculator {
 
 	public List<PrecisionRecall> allResults;
 	public List<PrecisionRecall> steps11Results;
-	public List<PrecisionRecall> interpolatedResults;
 	public List<PrecisionRecall> avgPrecisionResults;
 
-	public int relevantDocumentCount;
-	private int relevantDocumentsFound;
+	public long relevantDocumentCount;
+	private long relevantDocumentsFound;
 
 	public double avgPrecision;
 
@@ -29,19 +28,19 @@ public class PrecisionRecallCalculator {
 	public static double FALSE_NEGATIVE = 0; // quadrant 3
 	public static double TRUE_NEGATIVE = 0;// quadrant 4
 	
-	public PrecisionRecallCalculator(String name, int relevantDocumentCount) {
-		this.name = name;
+	public PrecisionRecallCalculator(long relevantDocumentCount) {
+		this.name = "test_name";
 		this.relevantDocumentCount = relevantDocumentCount;
 		this.allResults = new ArrayList<PrecisionRecall>();
 		this.avgPrecisionResults = new ArrayList<PrecisionRecall>();
 		this.relevantDocumentsFound = 0;
 	}
 
-	public void calculate(SearchResults results) {
+	public PrecisionRecall calculate(SearchResults results) {
 
-		double tp = results.relevantResults; // true positives
-		double fp = results.list.size() - tp; // false positives
-		double fn = relevantDocumentCount - results.relevantResults; // false negatives
+		double tp = results.getRelevantResults().size(); // true positives
+		double fp = results.getRelevantDocs().size() - tp; // false positives
+		double fn = relevantDocumentCount - results.getRelevantResults().size(); // false negatives
 
 		double precision = tp / (tp + fp);
 		double recall = tp / (tp + fn);
@@ -51,11 +50,13 @@ public class PrecisionRecallCalculator {
 		this.allResults.add(precisionRecall);
 
 		// Save value if new relevant document was received
-		if(results.relevantResults > relevantDocumentsFound) {
+		if(tp > relevantDocumentsFound) {
 			// Found a new relevant document!
 			this.avgPrecisionResults.add(precisionRecall);
 			relevantDocumentsFound++;
 		}
+		
+		return precisionRecall;
 	}
 
 	public void calculateAveragePrecision() {
@@ -64,7 +65,7 @@ public class PrecisionRecallCalculator {
 		double avgPrecision = 0;
 
 		for(PrecisionRecall precisionRecall : this.avgPrecisionResults) {
-			avgPrecision += precisionRecall.precision;
+			avgPrecision += precisionRecall.getPrecision();
 		}
 
 		avgPrecision /= (double) this.avgPrecisionResults.size();
@@ -72,30 +73,6 @@ public class PrecisionRecallCalculator {
 		System.out.println("Average Precision: " + avgPrecision);
 
 		this.avgPrecision = avgPrecision;
-	}
-
-	/**
-	 * Calculates the interpolated precision
-	 */
-	private void interpolate() {
-		interpolatedResults = new ArrayList<PrecisionRecall>();
-
-		// Pinterp(r) = max p(r1) r1 >= r
-		for (int r = 0; r < allResults.size(); r++) {
-			PrecisionRecall precisionRecall = allResults.get(r);
-			double recall = precisionRecall.recall;
-			double maxPrecision = precisionRecall.precision;
-
-			for (int r1 = r; r1 < allResults.size(); r1++) {
-				double precision = allResults.get(r1).precision;
-				if (precision > maxPrecision) {
-					maxPrecision = precision;
-				}
-			}
-
-			// Save the interpolated precision
-			interpolatedResults.add(new PrecisionRecall(maxPrecision, recall));
-		}
 	}
 
 	private void do11pointAverage(List<PrecisionRecall> results) {
@@ -106,7 +83,7 @@ public class PrecisionRecallCalculator {
 		for (int i = 0; i < results.size(); i++) {
 			PrecisionRecall precisionRecall = results.get(i);
 
-			if (precisionRecall.recall >= recallStep
+			if (precisionRecall.getRecall() >= recallStep
 					&& recallStep <= 1) {
 				this.steps11Results.add(precisionRecall);
 				recallStep += 0.1;
@@ -133,25 +110,11 @@ public class PrecisionRecallCalculator {
 		sb.append("Recall, Precision\n");
 
 		for (PrecisionRecall precisionRecall : this.allResults) {
-			sb.append(precisionRecall.recall + ", "
-					+ precisionRecall.precision + "\n");
+			sb.append(precisionRecall.getRecall() + ", "
+					+ precisionRecall.getPrecision() + "\n");
 		}
 
 		this.writeToFile(sb, this.name + "_all.txt");
-	}
-
-	public void printInterpolatedResults() throws IOException {
-		// Over 2000 lines, better to write them to a file
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("Recall, Precision\n");
-
-		for (PrecisionRecall precisionRecall : this.interpolatedResults) {
-			sb.append(precisionRecall.recall + ", "
-					+ precisionRecall.precision + "\n");
-		}
-
-		this.writeToFile(sb, this.name + "_interpolated.txt");
 	}
 
 	public void print11pointAverage() {
@@ -159,14 +122,13 @@ public class PrecisionRecallCalculator {
 		for (int step = 0; step < this.steps11Results.size(); step++) {
 			PrecisionRecall stepResult = this.steps11Results.get(step);
 
-			System.out.println(stepResult.recall + ", " + stepResult.precision);
+			System.out.println(stepResult.getRecall() + ", " + stepResult.getPrecision());
 		}
 	}
 
 	private void writeToFile(StringBuffer sb, String filename) throws IOException {
 
-		Writer out = new OutputStreamWriter(new FileOutputStream(filename),
-				"UTF-8");
+		Writer out = new OutputStreamWriter(new FileOutputStream(filename), "UTF-8");
 
 		try {
 			out.write(sb.toString());

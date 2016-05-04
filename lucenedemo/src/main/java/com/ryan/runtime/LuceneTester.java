@@ -8,6 +8,8 @@ public class LuceneTester {
 		RepRiskSearcher searcher = new RepRiskSearcher();
 		//tester.createIndex();
 		searcher.relevantSearch("Cable News Network, Inc");
+		
+		searcher.absoluteSearch("Cable News Network, Inc");
 	}
 
 }

@@ -61,7 +61,9 @@ public class Indexer implements AutoCloseable {
 	}   
 
 	private void indexFile(File file) throws IOException{
-		System.out.println("Indexing "+file.getCanonicalPath());
+		if(AppConstants.isDebbugingMode) {
+			System.out.println("Indexing "+file.getCanonicalPath());
+		}
 		Document document = getDocument(file);
 		writer.addDocument(document);
 	}
