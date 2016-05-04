@@ -8,7 +8,7 @@ import com.ryan.reprisk.constants.AppConstants;
 
 public class RepRiskIndexer {
 
-	public static void createIndex() throws IOException{
+	public static void createIndex() {
 		createIndex(AppConstants.INDEX_DIR, AppConstants.DATA_DIR);
 	}
 	
