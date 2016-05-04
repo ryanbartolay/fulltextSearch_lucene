@@ -23,11 +23,6 @@ public class PrecisionRecallCalculator {
 
 	String name;
 	
-	public static double TRUE_POSITIVE = 0; //quadrant 1
-	public static double FALSE_POSITIVE = 0; // quadrant 2
-	public static double FALSE_NEGATIVE = 0; // quadrant 3
-	public static double TRUE_NEGATIVE = 0;// quadrant 4
-	
 	public PrecisionRecallCalculator(long relevantDocumentCount) {
 		this.name = "test_name";
 		this.relevantDocumentCount = relevantDocumentCount;
