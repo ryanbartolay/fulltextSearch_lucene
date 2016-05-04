@@ -7,14 +7,18 @@ import java.util.Map;
 import org.apache.lucene.document.Document;
 
 import com.ryan.reprisk.bom.RepRiskCsvParser;
+import com.ryan.reprisk.bom.RepRiskIndexer;
 import com.ryan.reprisk.bom.RepRiskSearcher;
+import com.ryan.reprisk.constants.AppConstants;
 import com.ryan.reprisk.model.Company;
 
 public class Main {
+	
 	public static void main(String[] args) {
 		// 1st create index for all xml files, set the index dir and data dir (xml location)
 		//RepRiskIndexer.createIndex();
-		//RepRiskIndexer.createIndex(AppConstants.INDEX_DIR, AppConstants.DATA_DIR);
+		RepRiskIndexer.createIndex(AppConstants.INDEX_DIR, AppConstants.DATA_DIR);
+		long totalIndexed = RepRiskIndexer.getTotalIndexed();
 		
 		// 2nd lets get the contents from csv (RepRisk Companies)
 		RepRiskCsvParser csvParser = new RepRiskCsvParser();

@@ -9,6 +9,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -24,6 +25,7 @@ import com.ryan.reprisk.constants.AppConstants;
 public class Indexer implements AutoCloseable {
 
 	private IndexWriter writer;
+	private IndexReader reader;
 
 	public Indexer(String indexDirectoryPath) throws IOException{
 		//this directory will contain the indexes
@@ -64,7 +66,7 @@ public class Indexer implements AutoCloseable {
 		writer.addDocument(document);
 	}
 
-	public int createIndex(String dataDirPath, FileFilter filter) 
+	public long createIndex(String dataDirPath, FileFilter filter) 
 			throws IOException{
 		//get all files in the data directory
 		File[] files = new File(dataDirPath).listFiles();
@@ -75,5 +77,9 @@ public class Indexer implements AutoCloseable {
 			}
 		}
 		return writer.numDocs();
+	}
+	
+	public long getTotalIndexed() {
+		return 0;
 	}
 }

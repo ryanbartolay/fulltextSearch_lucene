@@ -7,8 +7,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ryan.model.PrecisionRecall;
-import com.ryan.model.SearchResults;
+import com.ryan.reprisk.model.PrecisionRecall;
+import com.ryan.reprisk.model.SearchResults;
 
 public class PrecisionRecallCalculator {
 
@@ -23,7 +23,12 @@ public class PrecisionRecallCalculator {
 	public double avgPrecision;
 
 	String name;
-
+	
+	public static double TRUE_POSITIVE = 0; //quadrant 1
+	public static double FALSE_POSITIVE = 0; // quadrant 2
+	public static double FALSE_NEGATIVE = 0; // quadrant 3
+	public static double TRUE_NEGATIVE = 0;// quadrant 4
+	
 	public PrecisionRecallCalculator(String name, int relevantDocumentCount) {
 		this.name = name;
 		this.relevantDocumentCount = relevantDocumentCount;
@@ -32,7 +37,7 @@ public class PrecisionRecallCalculator {
 		this.relevantDocumentsFound = 0;
 	}
 
-	public void calculate(SearchResults results, int hitLimit) {
+	public void calculate(SearchResults results) {
 
 		double tp = results.relevantResults; // true positives
 		double fp = results.list.size() - tp; // false positives
