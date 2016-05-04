@@ -1,4 +1,4 @@
-package com.ryan.reprisk.bom;
+package com.ryan.reprisk;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import org.apache.lucene.util.Version;
 
 import com.ryan.reprisk.constants.AppConstants;
 
-public class Searcher {
+public class Searcher implements AutoCloseable {
 
 	IndexSearcher indexSearcher;
 	QueryParser queryParser;
@@ -34,7 +34,7 @@ public class Searcher {
 				new StandardAnalyzer(Version.LUCENE_36));
 	}
 
-	public TopDocs search( String searchQuery) 
+	public TopDocs search(String searchQuery) 
 			throws IOException, ParseException{
 		query = queryParser.parse(searchQuery);
 		return indexSearcher.search(query, AppConstants.MAX_SEARCH);

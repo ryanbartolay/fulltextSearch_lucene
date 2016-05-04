@@ -1,4 +1,4 @@
-package com.ryan.reprisk.bom;
+package com.ryan.reprisk;
 
 import java.io.File;
 import java.io.FileFilter;

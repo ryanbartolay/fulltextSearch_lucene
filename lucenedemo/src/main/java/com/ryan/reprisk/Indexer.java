@@ -1,4 +1,4 @@
-package com.ryan.reprisk.bom;
+package com.ryan.reprisk;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -21,7 +21,7 @@ import com.ryan.reprisk.constants.AppConstants;
  * @author ryan.bartolay
  *
  */
-public class Indexer {
+public class Indexer implements AutoCloseable {
 
 	private IndexWriter writer;
 
@@ -70,12 +70,7 @@ public class Indexer {
 		File[] files = new File(dataDirPath).listFiles();
 
 		for (File file : files) {
-			if(!file.isDirectory()
-					&& !file.isHidden()
-					&& file.exists()
-					&& file.canRead()
-					&& filter.accept(file)
-					){
+			if(!file.isDirectory() && !file.isHidden() && file.exists() && file.canRead() && filter.accept(file)){
 				indexFile(file);
 			}
 		}
