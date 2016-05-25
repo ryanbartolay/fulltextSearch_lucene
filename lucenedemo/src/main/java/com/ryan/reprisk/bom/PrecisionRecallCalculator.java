@@ -36,7 +36,7 @@ public class PrecisionRecallCalculator {
 		double tp = results.getRelevantResults().size(); // true positives
 		double fp = results.getRelevantDocs().size() - tp; // false positives
 		double fn = relevantDocumentCount - results.getRelevantResults().size(); // false negatives
-
+		// true negatives are 	relevantDocumentCount - fp
 		double precision = tp / (tp + fp);
 		double recall = tp / (tp + fn);
 
